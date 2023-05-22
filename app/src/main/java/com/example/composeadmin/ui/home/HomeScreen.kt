@@ -1,7 +1,9 @@
 package com.example.composeadmin.ui.home
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -32,7 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.composeadmin.R
 import com.example.composeadmin.ui.LoadingCircular
-import com.example.composeadmin.ui.utils.Poppins
+import com.example.composeadmin.ui.theme.Poppins
 
 @Composable
 fun HomeScreen(viewModel: HomeScreenViewModel) {
@@ -42,8 +45,9 @@ fun HomeScreen(viewModel: HomeScreenViewModel) {
         when (uiState) {
             is HomeUIState.Error -> ErrorMessage(
                 Modifier.align(Alignment.Center),
-                (uiState as HomeUIState.Error).error?:"Generic error"
+                (uiState as HomeUIState.Error).error ?: "Generic error"
             )
+
             HomeUIState.Loading -> LoadingCircular(Modifier.align(Alignment.Center))
 
             is HomeUIState.Success -> VariableList(variables = (uiState as HomeUIState.Success).list!!)
@@ -102,4 +106,16 @@ fun ErrorMessage(modifier: Modifier, mesg: String) {
             textAlign = TextAlign.Center
         )
     }
+}
+
+@Preview
+@Composable
+fun ReloadButton() {
+    Image(
+        painter = painterResource(id = R.drawable.baseline_refresh_24),
+        contentDescription = "Refresh button",
+        modifier = Modifier
+            .padding(3.dp)
+            .clickable { Log.d("nñasda", "chirimolla") }
+    )
 }
