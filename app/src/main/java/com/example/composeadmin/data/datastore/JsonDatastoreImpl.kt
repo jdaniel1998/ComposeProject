@@ -19,16 +19,16 @@ val Context.datastore: DataStore<Preferences> by preferencesDataStore(name = Dat
 
 class JsonDatastoreImpl @Inject constructor(private val context: Context) : JsonDatastore {
 
-    private val JSON_STRING = stringPreferencesKey("JSON_STRING")
+    private val JSON = stringPreferencesKey("JSON_STRING")
 
     override suspend fun saveJson(json: JSONObject) {
         context.datastore.edit {
-            it[JSON_STRING] = Gson().toJson(json)
+            it[JSON] = Gson().toJson(json)
         }
     }
 
     override suspend fun getJson(): JSONObject? {
         val preferences = context.datastore.data.first()
-        return Gson().fromJson(preferences[JSON_STRING], JSONObject::class.java)
+        return Gson().fromJson(preferences[JSON], JSONObject::class.java)
     }
 }

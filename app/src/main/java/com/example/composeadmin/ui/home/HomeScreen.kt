@@ -2,12 +2,11 @@ package com.example.composeadmin.ui.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -18,21 +17,27 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Refresh
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import com.example.composeadmin.domain.model.Variable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.composeadmin.Constants.SCREEN_TITLE
 import com.example.composeadmin.R
 import com.example.composeadmin.ui.LoadingCircular
 import com.example.composeadmin.ui.theme.Poppins
@@ -59,8 +64,26 @@ fun HomeScreen(viewModel: HomeScreenViewModel) {
 
 @Composable
 fun HomeScreen(variables: List<Variable>, onClick: () -> Unit) {
-    Column() {
-        ReloadButton(Modifier.align(Alignment.End), onClick)
+    Column {
+        Row(
+            modifier = Modifier
+                .padding(top = 10.dp, bottom = 5.dp, start = 20.dp, end = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                modifier = Modifier
+                    .weight(1f)
+                    .offset(y = 4.dp),
+                text = SCREEN_TITLE,
+                maxLines = 1,
+                fontFamily = Poppins,
+                fontWeight = FontWeight.Medium,
+                fontSize = 22.sp,
+                overflow = TextOverflow.Ellipsis
+            )
+            ReloadButton(onClick)
+        }
+
         VariableList(variables = variables)
     }
 
@@ -95,7 +118,7 @@ fun ErrorMessage(modifier: Modifier, msg: String) {
                 shape = RoundedCornerShape(15.dp)
             ),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = CenterHorizontally
     ) {
         Image(
             painter = painterResource(id = R.drawable.baseline_error_outline_24),
@@ -120,15 +143,14 @@ fun ErrorMessage(modifier: Modifier, msg: String) {
 }
 
 @Composable
-fun ReloadButton(modifier: Modifier, onClick: () -> Unit) {
-
-    Image(
-        painter = painterResource(id = R.drawable.baseline_refresh_24),
-        contentDescription = "Refresh button",
-        modifier = modifier
-            .padding(15.dp)
-            .clickable(onClick = onClick)
-            .size(33.dp)
-
-    )
+fun ReloadButton(onClick: () -> Unit) {
+    IconButton(
+        onClick = onClick
+    ) {
+        Icon(
+            modifier = Modifier.size(32.dp),
+            imageVector = Icons.Rounded.Refresh,
+            contentDescription = "Refresh button"
+        )
+    }
 }
