@@ -7,11 +7,15 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,7 +29,6 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.composeadmin.R
@@ -52,9 +55,30 @@ fun HomeScreen(viewModel: HomeScreenViewModel) {
 
 @Composable
 fun HomeScreen(variables: List<Variable>) {
-    VariableList(variables = variables)
+    Column() {
+        ReloadButton(Modifier.align(Alignment.End))
+        VariableList(variables = variables)
+    }
+
 }
 
+@Composable
+fun VariableList(
+    variables: List<Variable>
+) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        contentPadding = PaddingValues(
+            horizontal = 10.dp,
+            vertical = 10.dp
+        ),
+        content = {
+            items(variables) {
+                VariableCard(variable = it)
+            }
+        }
+    )
+}
 
 @Composable
 fun ErrorMessage(modifier: Modifier, mesg: String) {
@@ -90,13 +114,12 @@ fun ErrorMessage(modifier: Modifier, mesg: String) {
     }
 }
 
-@Preview
 @Composable
-fun ReloadButton() {
+fun ReloadButton(modifier: Modifier) {
     Image(
         painter = painterResource(id = R.drawable.baseline_refresh_24),
         contentDescription = "Refresh button",
-        modifier = Modifier
+        modifier = modifier
             .padding(3.dp)
             .clickable { Log.d("nñasda", "chirimolla") }
     )
