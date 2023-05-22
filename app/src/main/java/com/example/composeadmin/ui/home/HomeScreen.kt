@@ -1,8 +1,8 @@
 package com.example.composeadmin.ui.home
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -24,6 +25,7 @@ import com.example.composeadmin.domain.model.Variable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
@@ -48,15 +50,17 @@ fun HomeScreen(viewModel: HomeScreenViewModel) {
 
             HomeUIState.Loading -> LoadingCircular(Modifier.align(Alignment.Center))
 
-            is HomeUIState.Success -> HomeScreen(variables = (uiState as HomeUIState.Success).list!!)
+            is HomeUIState.Success -> HomeScreen(variables = (uiState as HomeUIState.Success).list!!) {
+                viewModel.getJson()
+            }
         }
     }
 }
 
 @Composable
-fun HomeScreen(variables: List<Variable>) {
+fun HomeScreen(variables: List<Variable>, onClick: () -> Unit) {
     Column() {
-        ReloadButton(Modifier.align(Alignment.End))
+        ReloadButton(Modifier.align(Alignment.End), onClick)
         VariableList(variables = variables)
     }
 
@@ -72,6 +76,7 @@ fun VariableList(
             horizontal = 10.dp,
             vertical = 10.dp
         ),
+        modifier = Modifier.offset(y = (-13).dp),
         content = {
             items(variables) {
                 VariableCard(variable = it)
@@ -81,7 +86,7 @@ fun VariableList(
 }
 
 @Composable
-fun ErrorMessage(modifier: Modifier, mesg: String) {
+fun ErrorMessage(modifier: Modifier, msg: String) {
     Column(
         modifier = modifier
             .padding(10.dp)
@@ -102,7 +107,7 @@ fun ErrorMessage(modifier: Modifier, mesg: String) {
             colorFilter = ColorFilter.tint(Color(0xFFF0133F))
         )
         Text(
-            text = mesg,
+            text = msg,
             modifier = Modifier
                 .padding(top = 7.dp, start = 20.dp, end = 20.dp)
                 .offset(y = (-15).dp),
@@ -115,12 +120,15 @@ fun ErrorMessage(modifier: Modifier, mesg: String) {
 }
 
 @Composable
-fun ReloadButton(modifier: Modifier) {
+fun ReloadButton(modifier: Modifier, onClick: () -> Unit) {
+
     Image(
         painter = painterResource(id = R.drawable.baseline_refresh_24),
         contentDescription = "Refresh button",
         modifier = modifier
-            .padding(3.dp)
-            .clickable { Log.d("nñasda", "chirimolla") }
+            .padding(15.dp)
+            .clickable(onClick = onClick)
+            .size(33.dp)
+
     )
 }

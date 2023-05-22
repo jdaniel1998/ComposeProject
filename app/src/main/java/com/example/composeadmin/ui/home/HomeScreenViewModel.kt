@@ -1,5 +1,6 @@
 package com.example.composeadmin.ui.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.composeadmin.domain.model.Variable
@@ -26,9 +27,10 @@ class HomeScreenViewModel @Inject constructor(
         getJson()
     }
 
-    private fun getJson() {
+    fun getJson() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                _homeUiState.emit(HomeUIState.Loading)
                 when (val result = getJsonUseCase()) {
                     is Resource.Error -> _homeUiState.emit(HomeUIState.Error(result.message))
                     is Resource.Success -> _homeUiState.emit(HomeUIState.Success(result.data))
