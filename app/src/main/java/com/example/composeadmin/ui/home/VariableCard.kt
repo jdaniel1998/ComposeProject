@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.composeadmin.domain.model.Variable
 import com.example.composeadmin.ui.components.MultiColorText
-import com.example.composeadmin.ui.utils.Poppins
+import com.example.composeadmin.ui.theme.Poppins
 
 @Composable
 fun VariableCard(variable: Variable) {

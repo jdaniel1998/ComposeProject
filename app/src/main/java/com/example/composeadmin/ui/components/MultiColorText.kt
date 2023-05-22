@@ -11,7 +11,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.composeadmin.ui.utils.Poppins
+import com.example.composeadmin.ui.theme.Poppins
+
 
 @Composable
 fun MultiColorText(
