@@ -1,5 +1,9 @@
+@file:OptIn(ExperimentalAnimationApi::class)
+
 package com.example.composeadmin.ui.home
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -46,20 +50,23 @@ import com.example.composeadmin.ui.theme.Poppins
 fun HomeScreen(viewModel: HomeScreenViewModel) {
 
     val uiState by viewModel.homeUIState.collectAsState()
-    Box(Modifier.fillMaxSize()) {
-        when (uiState) {
-            is HomeUIState.Error -> ErrorMessage(
-                Modifier.align(Alignment.Center),
-                (uiState as HomeUIState.Error).error ?: "Generic error"
-            )
 
-            HomeUIState.Loading -> LoadingCircular(Modifier.align(Alignment.Center))
+    AnimatedContent(targetState = uiState) {
+        Box(Modifier.fillMaxSize()) {
+            when (it) {
+                is HomeUIState.Error -> ErrorMessage(
+                    Modifier.align(Alignment.Center),
+                    (it).error ?: "Generic error"
+                )
+                HomeUIState.Loading -> LoadingCircular(Modifier.align(Alignment.Center))
 
-            is HomeUIState.Success -> HomeScreen(variables = (uiState as HomeUIState.Success).list!!) {
-                viewModel.getJson()
+                is HomeUIState.Success -> HomeScreen(variables = (it).list!!) {
+                    viewModel.getJson()
+                }
             }
         }
     }
+
 }
 
 @Composable
